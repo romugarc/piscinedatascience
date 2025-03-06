@@ -18,6 +18,7 @@ def ft_load(path: str) -> np.array:
         if img.ndim != 3 or img.shape[2] != 3:
             raise ValueError("image has too many channels, should be strictly RGB")
         print("The shape of image is :", img.shape)
+        print(img)
         return img
     except (ValueError, FileNotFoundError) as e:
         print(f"{type(e).__name__}:{(str(e))}")

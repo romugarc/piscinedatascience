@@ -6,8 +6,7 @@ import matplotlib.pyplot as plt
 
 def main():
     """
-    This program loads an image, prints some information about it,
-    and displays it after "zooming"
+    This program 
     """
     try:
         img = ft_load("animal.jpeg")
@@ -19,7 +18,6 @@ def main():
     
     if img.shape[0] < 400 or img.shape[1] < 400:
         print("Error: image size too small, must be at least 400x400")
-    print(img)
     
     height, width = img.shape[:2]
     start_top = (height // 2) - 200
@@ -29,10 +27,13 @@ def main():
     
     zoomed_img = img[start_top:end_top, start_left:end_left]
     zoomed_img = np.mean(zoomed_img, axis=2, dtype=int)
-    print("New shape after slicing :", zoomed_img.shape)
+    print("The shape of image is: ", zoomed_img.shape)
     print(zoomed_img[:,:,np.newaxis])
     
-    plt.imshow(zoomed_img, cmap="gray")
+    rotated_img = np.array([[zoomed_img[j][i] for j in range(zoomed_img.shape[0])] for i in range(zoomed_img.shape[1])])
+    print("New shape after Transpose:", rotated_img.shape)
+    print(rotated_img)
+    plt.imshow(rotated_img, cmap="gray")
     plt.show()
     return
 
