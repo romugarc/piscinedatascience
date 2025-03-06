@@ -9,7 +9,7 @@ def give_bmi(height: list[int | float], weight: list[int | float])\
             raise ValueError("height and weight are not the same size")
         if not all(isinstance(item, (int, float)) for item in height) or \
                 not all(isinstance(item, (int, float)) for item in weight):
-         raise ValueError("height and weight should be only ints or floats")
+            raise ValueError("height and weight should be only ints or floats")
         if any(item == 0 for item in height):
             raise ValueError("parameters in height can't be 0")
         newlist = list(map(lambda h, w: w/(h**2), height, weight))

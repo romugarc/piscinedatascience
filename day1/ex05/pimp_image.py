@@ -1,7 +1,6 @@
-from load_image import ft_load
 import numpy as np
-from PIL import Image
 import matplotlib.pyplot as plt
+
 
 def ft_invert(array) -> np.array:
     """Inverts the color of the image received."""
@@ -13,7 +12,7 @@ def ft_invert(array) -> np.array:
         if len(set(map(len, array))) not in (0, 1):
             raise ValueError("incorrect data in image")
         if array.ndim != 3 or array.shape[2] != 3:
-            raise ValueError("image has too many channels, should be strictly RGB")
+            raise ValueError("image has too many channels, should be RGB")
 
         invert_img = np.copy(array)
         R = np.array(invert_img[:, :, 0])
@@ -26,10 +25,11 @@ def ft_invert(array) -> np.array:
         plt.imshow(invert_img)
         plt.show()
         return invert_img
-    
+
     except (ValueError, TypeError) as e:
         print(f"{type(e).__name__}: {str(e)}")
         return []
+
 
 def ft_red(array) -> np.array:
     """Reds the color of the image received."""
@@ -41,8 +41,8 @@ def ft_red(array) -> np.array:
         if len(set(map(len, array))) not in (0, 1):
             raise ValueError("incorrect data in image")
         if array.ndim != 3 or array.shape[2] != 3:
-            raise ValueError("image has too many channels, should be strictly RGB")
-        
+            raise ValueError("image has too many channels, should be RGB")
+
         red_img = np.copy(array)
         R = np.array(red_img[:, :, 0])
         G = np.array(red_img[:, :, 1])
@@ -54,14 +54,14 @@ def ft_red(array) -> np.array:
         plt.imshow(red_img)
         plt.show()
         return red_img
-    
+
     except (ValueError, TypeError) as e:
         print(f"{type(e).__name__}: {str(e)}")
         return []
 
+
 def ft_green(array) -> np.array:
     """Greens the color of the image received."""
-    
     try:
         if array is None:
             raise ValueError("array should not be None")
@@ -70,7 +70,7 @@ def ft_green(array) -> np.array:
         if len(set(map(len, array))) not in (0, 1):
             raise ValueError("incorrect data in image")
         if array.ndim != 3 or array.shape[2] != 3:
-            raise ValueError("image has too many channels, should be strictly RGB")
+            raise ValueError("image has too many channels, should be RGB")
 
         green_img = np.copy(array)
         R = np.array(green_img[:, :, 0])
@@ -83,10 +83,11 @@ def ft_green(array) -> np.array:
         plt.imshow(green_img)
         plt.show()
         return green_img
-    
+
     except (ValueError, TypeError) as e:
         print(f"{type(e).__name__}: {str(e)}")
         return []
+
 
 def ft_blue(array) -> np.array:
     """Blues the color of the image received."""
@@ -98,11 +99,9 @@ def ft_blue(array) -> np.array:
         if len(set(map(len, array))) not in (0, 1):
             raise ValueError("incorrect data in image")
         if array.ndim != 3 or array.shape[2] != 3:
-            raise ValueError("image has too many channels, should be strictly RGB")
-        
+            raise ValueError("image has too many channels, should be RGB")
+
         blue_img = np.copy(array)
-        R = np.array(blue_img[:, :, 0])
-        G = np.array(blue_img[:, :, 1])
         B = np.array(blue_img[:, :, 2])
         blue_img[:, :, 0] = 0
         blue_img[:, :, 1] = 0
@@ -111,10 +110,11 @@ def ft_blue(array) -> np.array:
         plt.imshow(blue_img)
         plt.show()
         return blue_img
-    
+
     except (ValueError, TypeError) as e:
         print(f"{type(e).__name__}: {str(e)}")
         return []
+
 
 def ft_grey(array) -> np.array:
     """Greys the color of the image received."""
@@ -126,15 +126,15 @@ def ft_grey(array) -> np.array:
         if len(set(map(len, array))) not in (0, 1):
             raise ValueError("incorrect data in image")
         if array.ndim != 3 or array.shape[2] != 3:
-            raise ValueError("image has too many channels, should be strictly RGB")
-        
+            raise ValueError("image has too many channels, should be RGB")
+
         grey_img = np.copy(array)
         grey_img = np.mean(grey_img, axis=2, dtype=int)
 
         plt.imshow(grey_img, cmap="gray")
         plt.show()
         return grey_img
-    
+
     except (ValueError, TypeError) as e:
         print(f"{type(e).__name__}: {str(e)}")
         return []

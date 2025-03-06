@@ -16,7 +16,7 @@ def ft_load(path: str) -> np.array:
         if len(set(map(len, img))) not in (0, 1):
             raise ValueError("incorrect data in image")
         if img.ndim != 3 or img.shape[2] != 3:
-            raise ValueError("image has too many channels, should be strictly RGB")
+            raise ValueError("image has too many channels, should be RGB")
         print("The shape of image is :", img.shape)
         print(img)
         return img
