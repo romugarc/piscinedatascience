@@ -2,6 +2,10 @@ import pandas as pd
 
 
 def load(path: str) -> pd.DataFrame:
+    """
+    This function takes a path as argument,
+    writes the dimensions of the data set and returns it.
+    """
     if not isinstance(path, str):
         return None
     try:
