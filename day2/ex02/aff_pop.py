@@ -31,35 +31,39 @@ def main():
     and displays the country information versus other
     country of your choice.
     """
-    df = load("population_total.csv")
-    if df is None:
-        print("Error: invalid dataframe")
-        return
-    if not any(item == "country" for item in df.columns):
-        print("Error: no column is named 'country'")
-        return
+    try:
+        df = load("population_total.csv")
+        if df is None:
+            print("Error: invalid dataframe")
+            return
+        if not any(item == "country" for item in df.columns):
+            print("Error: no column is named 'country'")
+            return
 
-    country = "France"
-    other = "Belgium"
-    df = df.set_index("country")
-    newdf = df.loc[country]
-    otherdf = df.loc[other]
-    newdf = newdf["1800":"2050"]
-    otherdf = otherdf["1800":"2050"]
-    newdf = newdf.apply(convert_kMB)
-    otherdf = otherdf.apply(convert_kMB)
-    max_val = max(max(newdf.values), max(otherdf.values))
-    ticks = [max_val * 0.9, max_val * 0.6, max_val * 0.3]
+        country = "France"
+        other = "Belgium"
+        df = df.set_index("country")
+        newdf = df.loc[country]
+        otherdf = df.loc[other]
+        newdf = newdf["1800":"2050"]
+        otherdf = otherdf["1800":"2050"]
+        newdf = newdf.apply(convert_kMB)
+        otherdf = otherdf.apply(convert_kMB)
+        max_val = max(max(newdf.values), max(otherdf.values))
+        ticks = [max_val * 0.9, max_val * 0.6, max_val * 0.3]
 
-    plt.xlabel("Year")
-    plt.ylabel("Population")
-    plt.title("Population Projections")
-    plt.plot(newdf.index, newdf.values, label=country, color='g')
-    plt.plot(otherdf.index, otherdf.values, label=other, color='b')
-    plt.xticks(newdf.index[::40])
-    plt.yticks(ticks, [correctdisplay(item) for item in ticks])
-    plt.legend(loc="lower right")
-    plt.show()
+        plt.xlabel("Year")
+        plt.ylabel("Population")
+        plt.title("Population Projections")
+        plt.plot(newdf.index, newdf.values, label=country, color='g')
+        plt.plot(otherdf.index, otherdf.values, label=other, color='b')
+        plt.xticks(newdf.index[::40])
+        plt.yticks(ticks, [correctdisplay(item) for item in ticks])
+        plt.legend(loc="lower right")
+        plt.show()
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return
     return
 
 

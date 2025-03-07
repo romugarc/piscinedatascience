@@ -8,22 +8,26 @@ def main():
     loads the file life_expectancy_years.csv,
     and displays the country information
     """
-    df = load("life_expectancy_years.csv")
-    if df is None:
-        print("Error: invalid dataframe")
+    try:
+        df = load("life_expectancy_years.csv")
+        if df is None:
+            print("Error: invalid dataframe")
+            return
+        if not any(item == "country" for item in df.columns):
+            print("Error: no column is named 'country'")
+            return
+        country = "France"
+        df = df.set_index("country")
+        newdf = df.loc[country]
+        plt.xlabel("Year")
+        plt.ylabel("Life expectancy")
+        plt.title(f"{country} Life expectancy Projections")
+        plt.plot(newdf.index, newdf.values)
+        plt.xticks(newdf.index[::40])
+        plt.show()
+    except Exception as e:
+        print(f"Error: {str(e)}")
         return
-    if not any(item == "country" for item in df.columns):
-        print("Error: no column is named 'country'")
-        return
-    country = "France"
-    df = df.set_index("country")
-    newdf = df.loc[country]
-    plt.xlabel("Year")
-    plt.ylabel("Life expectancy")
-    plt.title(f"{country} Life expectancy Projections")
-    plt.plot(newdf.index, newdf.values)
-    plt.xticks(newdf.index[::40])
-    plt.show()
     return
 
 
