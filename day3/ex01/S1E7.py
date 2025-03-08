@@ -2,7 +2,7 @@ from S1E9 import Character
 
 
 class Baratheon(Character):
-    """Baratheon Class that inherits from Character"""
+    """Representing the Baratheon family"""
     def __init__(self, first_name, is_alive=True):
         """Baratheon constructor"""
         super().__init__(first_name, is_alive)
@@ -19,26 +19,26 @@ class Baratheon(Character):
         return f"Vector: ('{self.family_name}', '{self.eyes}', '{self.hair}')"
 
     def die(self):
-        """Baraetheon die method"""
+        """Baratheon die method"""
         self.is_alive = False
 
 
 class Lannister(Character):
-    """Lannister Class that inherits from Character"""
+    """Representing the Lannister family"""
     def __init__(self, first_name, is_alive=True):
         """Lannister constructor"""
         super().__init__(first_name, is_alive)
         self.family_name = "Lannister"
         self.eyes = "blue"
-        self.hair = "light"
+        self.hairs = "light"
 
     def __str__(self):
         """Lannister str method"""
-        return f"Vector: ('{self.family_name}', '{self.eyes}', '{self.hair}')"
+        return f"Vector: ('{self.family_name}', '{self.eyes}', '{self.hairs}')"
 
     def __repr__(self):
         """Lannister repr method"""
-        return f"Vector: ('{self.family_name}', '{self.eyes}', '{self.hair}')"
+        return f"Vector: ('{self.family_name}', '{self.eyes}', '{self.hairs}')"
 
     @classmethod
     def create_lannister(cls, first_name, is_alive=True):
