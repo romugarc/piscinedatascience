@@ -4,6 +4,7 @@ def calc_mean(args: tuple) -> None:
         print("mean:", sum(args) / len(args))
     else:
         print("ERROR")
+    return
 
 
 def calc_median(args: tuple) -> None:
@@ -29,9 +30,9 @@ def calc_quartile(args: tuple) -> None:
     largs = list(args)
     largs.sort()
     lena = len(args)
-    quartile_one = lena // 4
-    quartile_three = 3 * lena // 4
-    print("quartile:", [float(largs[quartile_one]), float(largs[quartile_three])])        
+    q_one = lena // 4
+    q_three = 3 * lena // 4
+    print("quartile:", [float(largs[q_one]), float(largs[q_three])])
     return
 
 
@@ -62,6 +63,7 @@ def calc_var(args: tuple) -> None:
     var = sum(difflist) / len(largs)
     print("var:", var)
     return
+
 
 def ft_statistics(*args: any, **kwargs: any) -> None:
     """
