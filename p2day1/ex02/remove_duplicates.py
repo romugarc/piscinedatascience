@@ -38,6 +38,9 @@ def main():
         #remove la colonne prev_time !!
         cursor.execute(delete_duplicates_query)
 
+        delete_column_query = """ALTER TABLE temp_table DROP COLUMN prev_time"""
+        cursor.execute(delete_column_query)
+
         drop_query = f"""DROP TABLE IF EXISTS customers"""
         cursor.execute(drop_query)
 
