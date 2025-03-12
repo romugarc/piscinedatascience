@@ -3,13 +3,30 @@ import psycopg2
 import glob
 from dotenv import load_dotenv
 
+def create_item_table(cursor, connection):
+    path = "../../../../../goinfre/subject/item/item.csv"
+    table_name = path.split('/')[-1].replace('.csv', '')
+    columns = "product_id, category_id, category_code, brand"
+    create_drop_query = f"""DROP TABLE IF EXISTS {table_name}"""
+    cursor.execute(create_drop_query)
+    create_table_query = f"""CREATE TABLE IF NOT EXISTS {table_name}(
+                        product_id INT,
+                        category_id BIGINT,
+                        category_code TEXT,
+                        brand VARCHAR(255) NULL)"""
+    cursor.execute(create_table_query)
+    with open(path, 'r') as file:
+        next(file)
+        cursor.copy_expert(f"COPY {table_name} ({columns}) FROM STDIN WITH CSV", file)
+    connection.commit()
+    print(f"{table_name} done")
 
-load_dotenv(os.path.abspath("../.env"))
 
 def main():
     """
     Creates a postgres table using the data from a CSV
     """
+    load_dotenv(os.path.abspath("../.env"))
 
     params = {
         'dbname': os.getenv("POSTGRES_DB"),
@@ -20,12 +37,13 @@ def main():
     }
     columns = "event_time, event_type, product_id, price, user_id, user_session"
 
-    paths = glob.glob("../subject/customer/*.csv")
+    paths = glob.glob("../../../../../goinfre/subject/customer/*.csv")
     union_queries = []
-    connection = psycopg2.connect(**params)
-    cursor = connection.cursor()
     try:
-        for path in paths:        
+        connection = psycopg2.connect(**params)
+        cursor = connection.cursor()
+
+        for path in paths:
             table_name = path.split('/')[-1].replace('.csv', '')
             create_drop_query = f"""DROP TABLE IF EXISTS {table_name}"""
             cursor.execute(create_drop_query)
@@ -47,6 +65,8 @@ def main():
             connection.commit()
             print(f"{table_name} done")
             union_queries.append(f"SELECT * FROM {table_name}")
+        
+        create_item_table(cursor, connection)
 
         union_query = " UNION ALL ".join(union_queries)
         create_drop_query = f"""DROP TABLE IF EXISTS customers"""
