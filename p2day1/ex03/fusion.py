@@ -1,53 +1,76 @@
-import os
 import psycopg2
-import glob
+import os
 from dotenv import load_dotenv
 
+def change_item_table(cursor):
+    sql_query = """
+            CREATE TABLE temp_item AS
+            SELECT
+                product_id,
+                MAX(category_id) AS category_id,
+                MAX(category_code) AS category_code,
+                MAX(brand) AS brand
+            FROM item
+            GROUP BY product_id;
+            """
+    cursor.execute(sql_query)
 
+    sql_query = """DROP TABLE IF EXISTS item;"""
+    cursor.execute(sql_query)
 
-def main():
-    """
-    Creates a postgres table using the data from a CSV
-    """
+    sql_query = """ALTER TABLE temp_item RENAME TO item;"""
+    cursor.execute(sql_query)
 
-    load_dotenv(os.path.abspath("../.env"))
-    params = {
+def fusion_tables():
+    connection_params = {
         'dbname': os.getenv("POSTGRES_DB"),
         'user': os.getenv("POSTGRES_USER"),
         'password': os.getenv("POSTGRES_PASSWORD"),
         'host': os.getenv("HOST"),
-        'port': os.getenv("DB_PORT"),
+        'port': os.getenv("POSTGRES_PORT")
     }
-    columns = "event_type, product_id, prise, user_id, user_session"
-    connection = psycopg2.connect(**params)
-    cursor = connection.cursor()
+
     try:
-        delete_duplicates_query = f"""CREATE TABLE IF NOT EXISTS temp_table AS
-                        SELECT DISTINCT ON ({columns}, DATE_TRUNC('second', event_time)) *
-                        FROM (
-                            SELECT customers.*,
-                            LAG(event_time) OVER (PARTITION BY {columns} ORDER BY event_time) as prev_time
-                            FROM customers 
-                        ) as subq
-                        WHERE 
-                            prev_time IS NULL OR 
-                            event_time - prev_time > INTERVAL '1 second'
-                        ORDER BY {columns}, DATE_TRUNC('second', event_time), event_time
-                        """
-        connection.execute(delete_duplicates_query)
+        connection = psycopg2.connect(**connection_params)
+        cursor = connection.cursor()
 
-        drop_query = f"""DROP TABLE IF EXISTS customers"""
-        cursor.execute(drop_query)
+        change_item_table(cursor)
 
-        alter_query = f"""ALTER TABLE temp_table RENAME TO customers"""
-        cursor.execute(alter_query)
-        cursor.commit()
-        print("removed duplicates in customers")
+        sql_query = """
+        CREATE TABLE IF NOT EXISTS temp_customers AS
+        SELECT customers.*, item.category_id, item.category_code, item.brand
+        FROM customers
+        LEFT JOIN item
+        ON customers.product_id = item.product_id;"""
+        cursor.execute(sql_query)
+
+        sql_query = """
+               DROP TABLE IF EXISTS customers;"""
+        cursor.execute(sql_query)
+
+        sql_query = """
+        ALTER TABLE temp_customers RENAME TO customers;"""
+        cursor.execute(sql_query)
+
+        connection.commit()
+    except psycopg2.Error as e:
+        print(f"Database error: {e}")
+        if connection:
+            connection.rollback()
     except Exception as e:
-        connection.rollback()
-        print(f"Error:{str(e)}")
+        if connection:
+            connection.rollback()
+        print(f"Error: {e}")
     finally:
-        cursor.close()
-        connection.close()
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
+def main():
+    load_dotenv(os.path.abspath("../.env"))
+    fusion_tables()
+
+
 if __name__ == "__main__":
     main()
