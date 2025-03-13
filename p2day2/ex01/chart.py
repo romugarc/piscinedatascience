@@ -20,13 +20,14 @@ def main():
     }
     try:
         engine = create_engine(f"postgresql+psycopg2://{params['user']}:{params['password']}@{params['host']}:{params['port']}/{params['dbname']}")
-        df = pd.read_sql_query("""SELECT (event_type) FROM customers""", engine)
-        newdf = df.value_counts()
-        labels = [str(item).strip("(',)") for item in newdf.keys()]
-        explode = [0.01, 0.01, 0.01, 0.01]
+        df = pd.read_sql_query("""SELECT (event_time, event_type) FROM customers WHERE event_type = 'purchase'""", engine)
+        print(df)
+        #newdf = df.value_counts()
+        #labels = [str(item).strip("(',)") for item in newdf.keys()]
+        #xplode = [0.01, 0.01, 0.01, 0.01]
 
-        plt.pie(newdf, labels=labels, autopct='%1.1f%%', explode=explode)
-        plt.show()
+        #plt.pie(newdf, labels=labels, autopct='%1.1f%%', explode=explode)
+        #plt.show()
     except Exception as e:
         print(f"Error:{str(e)}")
 
