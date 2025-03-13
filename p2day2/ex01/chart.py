@@ -20,8 +20,10 @@ def main():
     }
     try:
         engine = create_engine(f"postgresql+psycopg2://{params['user']}:{params['password']}@{params['host']}:{params['port']}/{params['dbname']}")
-        timedf = pd.read_sql_query("""SELECT CAST(event_time as date), user_id FROM customers WHERE event_type = 'purchase'""", engine)
-        newdf = timedf.value_counts('event_time')
+        #timedf = pd.read_sql_query("""SELECT CAST(event_time as date), user_id FROM customers WHERE event_type = 'purchase'""", engine)
+        timedf = pd.read_sql_query("""SELECT date(event_time),  COUNT(*) OVER (PARTITION BY date(event_time)) FROM customers WHERE event_type = 'purchase' GROUP BY event_time""", engine)
+        print(timedf)
+        newdf = timedf.value_counts('date')
         print(newdf)
         newdf = newdf.sort_index()
         plt.ylabel("Number of customers")
@@ -30,13 +32,7 @@ def main():
         ax.set_facecolor('#EAEAF2')
         plt.grid(color='w')
         plt.show()
-            #cur.execute("""select date(event_time),  COUNT(*)
-             #       over (partition by date(event_time))   
-              #      from customers
-               #     where event_type = 'purchase'
-#
- #                       group by event_time;""")
- 
+
     except Exception as e:
         print(f"Error:{str(e)}")
 
