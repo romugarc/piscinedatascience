@@ -4,7 +4,7 @@ import glob
 from dotenv import load_dotenv
 
 def create_item_table(cursor, connection):
-    path = "../../../../../goinfre/subject/item/item.csv"
+    path = "/home/rgarcia/goinfre/subject/item/item.csv"
     table_name = path.split('/')[-1].replace('.csv', '')
     columns = "product_id, category_id, category_code, brand"
     create_drop_query = f"""DROP TABLE IF EXISTS {table_name}"""
@@ -37,7 +37,7 @@ def main():
     }
     columns = "event_time, event_type, product_id, price, user_id, user_session"
 
-    paths = glob.glob("../../../../../goinfre/subject/customer/*.csv")
+    paths = glob.glob("/home/rgarcia/goinfre/subject/customer/*.csv")
     try:
         connection = psycopg2.connect(**params)
         cursor = connection.cursor()
