@@ -21,12 +21,10 @@ def main():
         connection = psycopg2.connect(**connection_params)
         cursor = connection.cursor()
 
-        #faire pareil mais dans une table temp puis drop l'ancienne
         columns = ["category_id", "category_code", "brand"]
         types = ["BIGINT", "TEXT", "VARCHAR(255) NULL"]
         for item, type in zip(columns, types):
             alter_query = f"""ALTER TABLE customers ADD COLUMN IF NOT EXISTS {item} {type}"""
-            print(alter_query)
             cursor.execute(alter_query)
 
         fusion_query = f"""

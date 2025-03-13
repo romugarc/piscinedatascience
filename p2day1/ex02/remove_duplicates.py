@@ -35,7 +35,6 @@ def main():
                             event_time - prev_time > INTERVAL '1 second'
                         ORDER BY {columns}, DATE_TRUNC('second', event_time), event_time
                         """
-        #remove la colonne prev_time !!
         cursor.execute(delete_duplicates_query)
 
         delete_column_query = """ALTER TABLE temp_table DROP COLUMN prev_time"""
