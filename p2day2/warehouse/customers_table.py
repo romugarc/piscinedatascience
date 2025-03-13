@@ -17,9 +17,8 @@ def main():
         'host': os.getenv("HOST"),
         'port': os.getenv("DB_PORT"),
     }
-    columns = "event_time, event_type, product_id, price, user_id, user_session"
-
-    paths = glob.glob("../../../../../goinfre/subject/customer/*.csv")
+    
+    paths = glob.glob("/home/rgarcia/goinfre/subject/customer/*.csv")
     union_queries = []
     try:
         connection = psycopg2.connect(**params)

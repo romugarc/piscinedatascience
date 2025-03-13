@@ -26,6 +26,23 @@ def main():
         for item, type in zip(columns, types):
             alter_query = f"""ALTER TABLE customers ADD COLUMN IF NOT EXISTS {item} {type}"""
             cursor.execute(alter_query)
+        
+        temp_query = """
+                    CREATE TABLE temp_table AS
+                    SELECT
+                        product_id,
+                        MAX(category_id) AS category_id,
+                        MAX(category_code) AS category_code,
+                        MAX(brand) AS brand
+                    FROM item
+                    GROUP BY product_id"""
+        cursor.execute(temp_query)
+
+        drop_query = """DROP TABLE IF EXISTS item"""
+        cursor.execute(drop_query)
+
+        alter_query = """ALTER TABLE temp_table RENAME TO item"""
+        cursor.execute(alter_query)
 
         fusion_query = f"""
                 UPDATE customers
