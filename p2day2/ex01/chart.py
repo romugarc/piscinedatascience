@@ -36,9 +36,7 @@ def main():
                #     where event_type = 'purchase'
 #
  #                       group by event_time;""")
-
-
-
+ 
     except Exception as e:
         print(f"Error:{str(e)}")
 
