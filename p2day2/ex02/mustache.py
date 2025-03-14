@@ -57,8 +57,7 @@ def main():
         basketdf = pd.read_sql_query("""SELECT user_id, AVG(price)
                                         FROM customers
                                         WHERE event_type = 'cart'
-                                        GROUP BY user_id
-                                        HAVING AVG(price) BETWEEN 26 AND 43""", engine)
+                                        GROUP BY user_id""", engine)
         print(pricedf.describe().apply(lambda s: s.apply('{0:.5f}'.format)))
         price_graph(pricedf)
         price_graph2(pricedf)
