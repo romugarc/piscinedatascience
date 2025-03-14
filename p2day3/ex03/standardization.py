@@ -53,6 +53,16 @@ def main():
         if traindf is None:
             print("Error: invalid dataframe")
             return
+        print(testdf)
+        for column in testdf.columns:
+            if column == 'knight':
+                continue
+            testdf[column] = (testdf[column] - testdf[column].mean()) / testdf[column].std()
+        for column in traindf.columns:
+            if column == 'knight':
+                continue
+            traindf[column] = (traindf[column] - traindf[column].mean()) / traindf[column].std()
+        print(testdf)
         scatter_1(testdf, traindf)
 
     except Exception as e:
