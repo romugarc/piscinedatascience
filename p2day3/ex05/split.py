@@ -33,7 +33,6 @@ def main():
         if df is None:
             print("Error: invalid dataframe")
             return
-        print(df)
         newdf = df.sample(frac = 0.75)
         restdf = df.drop(newdf.index)
 
