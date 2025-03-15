@@ -2,7 +2,6 @@ import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import tree
-from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import f1_score
 
 
@@ -57,7 +56,7 @@ def main():
         x_val = validation.drop(columns=['knight'])
         truth_val = validation['knight']
 
-        dtree = DecisionTreeClassifier()
+        dtree = tree.DecisionTreeClassifier()
         dtree = dtree.fit(x_train, y_train)
         
         prediction = dtree.predict(x_val)
