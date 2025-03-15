@@ -1,8 +1,6 @@
 import sys
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn import tree
-from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import f1_score, accuracy_score
 from sklearn.neighbors import KNeighborsClassifier
 
@@ -72,7 +70,7 @@ def main():
         score = f1_score(truth_val, prediction)
         print(f"score:{score}")
         
-        test_pred = knn.predict(testdf)
+        test_pred = best_knn.predict(testdf)
         test_pred = ['Sith' if item == 1 else 'Jedi' for item in test_pred]
         with open("KNN.txt", "w") as tree_file:
             for item in test_pred:
