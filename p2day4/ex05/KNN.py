@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import tree
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, accuracy_score
 from sklearn.neighbors import KNeighborsClassifier
 
 
@@ -21,11 +21,6 @@ def load(path: str) -> pd.DataFrame:
     except Exception as e:
         print(f"Error:{str(e)}")
         return None
-
-
-def standardization(df):
-    for column in df.columns:
-        df[column] = (df[column] - df[column].mean()) / df[column].std()
 
 
 def main():
@@ -58,19 +53,33 @@ def main():
         x_val = validation.drop(columns=['knight'])
         truth_val = validation['knight']
 
-        for k in len(training.columns):
+        best_k = 0
+        best_score = 0
+        accuracy_list = []
+        for k in range(1, 31):
             knn = KNeighborsClassifier(n_neighbors=k)
             knn = knn.fit(x_train, y_train)
-            #accuracy score
+            prediction = knn.predict(x_val)
+            accuracy = accuracy_score(truth_val, prediction)
+            accuracy_list.append(accuracy)
+            if accuracy > best_score:
+                best_score = accuracy
+                best_k = k
+
+        best_knn = KNeighborsClassifier(n_neighbors=best_k)
+        best_knn = best_knn.fit(x_train, y_train)
+        prediction = best_knn.predict(x_val)
+        score = f1_score(truth_val, prediction)
+        print(f"score:{score}")
         
         test_pred = knn.predict(testdf)
         test_pred = ['Sith' if item == 1 else 'Jedi' for item in test_pred]
         with open("KNN.txt", "w") as tree_file:
             for item in test_pred:
                 tree_file.write(f"{item}\n")
-        
+ 
         plt.figure(figsize=(20, 20))
-        plt.plot()
+        plt.plot(accuracy_list, range(1, 31))
         plt.show()
         
 

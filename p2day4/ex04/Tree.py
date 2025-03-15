@@ -21,11 +21,6 @@ def load(path: str) -> pd.DataFrame:
         return None
 
 
-def standardization(df):
-    for column in df.columns:
-        df[column] = (df[column] - df[column].mean()) / df[column].std()
-
-
 def main():
     """
     Makes a decision tree based on the given data sets, and creates a Tree.txt file based on a prediction by the tree on the Test dataset
