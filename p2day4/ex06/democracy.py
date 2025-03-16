@@ -5,6 +5,7 @@ from sklearn import tree
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import f1_score, accuracy_score
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.
 
 
 def load(path: str) -> pd.DataFrame:

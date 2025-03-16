@@ -77,7 +77,7 @@ def main():
                 tree_file.write(f"{item}\n")
  
         plt.figure(figsize=(20, 20))
-        plt.plot(accuracy_list, range(1, 31))
+        plt.plot(accuracy_list)
         plt.show()
         
 
