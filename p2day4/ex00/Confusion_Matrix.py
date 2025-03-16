@@ -30,7 +30,7 @@ def main():
                 fn += 1
             elif lineP == "Sith" and lineT == "Sith":
                 tn += 1
-    accuracy = (tp + tn) / (tp + fn + fp + fn)
+    accuracy = (tp + tn) / (tp + tn + fp + fn)
     jedi_precision = tp / (tp + fp)
     sith_precision = tn / (tn + fn)
     jedi_recall = tp / (tp + fn)
