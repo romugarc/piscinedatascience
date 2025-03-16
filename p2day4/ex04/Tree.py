@@ -45,6 +45,7 @@ def main():
         traindf['knight'] = traindf['knight'].apply(lambda x: 0 if x == 'Jedi' else 1)
         training = traindf.sample(frac = 0.8)
         validation = traindf.drop(training.index)
+        print(training.shape)
 
         x_train = training.drop(columns=['knight'])
         y_train = training['knight']
@@ -67,7 +68,7 @@ def main():
         plt.figure(figsize=(20, 20))
         tree.plot_tree(dtree, feature_names=training.columns, class_names = ["Sith", "Jedi"], filled=True)
         plt.show()
-        
+
 
     except Exception as e:
         print(f"Error: {str(e)}")
