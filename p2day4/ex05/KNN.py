@@ -79,12 +79,12 @@ def main():
         plt.figure(figsize=(20, 20))
         plt.plot(accuracy_list)
         plt.show()
-        
+
 
     except Exception as e:
         print(f"Error: {str(e)}")
         return
-    
+        
     return
 
 
